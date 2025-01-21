@@ -51,6 +51,9 @@ public class KafkaConfig {
   @Value("${spring.kafka.producer.properties.max.in.flight.requests.per.connection}")
   private int inflightRequests;
 
+  @Value("${spring.kafka.producer.transaction-id-prefix}")
+  private String transactionalIdPrefix;
+
   public Map<String, Object> producerConfigs() {
     Map<String, Object> props = new HashMap<>();
     props.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
@@ -63,6 +66,8 @@ public class KafkaConfig {
 
     props.put(ProducerConfig.ENABLE_IDEMPOTENCE_CONFIG, idempotence);
     props.put(ProducerConfig.MAX_IN_FLIGHT_REQUESTS_PER_CONNECTION, inflightRequests);
+
+    props.put(ProducerConfig.TRANSACTIONAL_ID_CONFIG, transactionalIdPrefix);
     return props;
   }
 

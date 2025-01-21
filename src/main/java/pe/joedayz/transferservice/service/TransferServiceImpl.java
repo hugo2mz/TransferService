@@ -12,8 +12,8 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 import pe.joedayz.transferservice.error.TransferServiceException;
 import pe.joedayz.transferservice.model.TransferRestModel;
-import pe.joedayz.ws.core.DepositRequestedEvent;
-import pe.joedayz.ws.core.WithdrawalRequestedEvent;
+import pe.joedayz.ws.core.events.DepositRequestedEvent;
+import pe.joedayz.ws.core.events.WithdrawalRequestedEvent;
 
 /**
  * @author josediaz
@@ -49,7 +49,7 @@ public class TransferServiceImpl implements TransferService {
       LOGGER.info("Sent event to withdrawal topic.");
 
       // Business logic that causes and error
-      callRemoteServce();
+      callRemoteService();
 
       kafkaTemplate.send(environment.getProperty("deposit-money-topic", "deposit-money-topic"), depositEvent);
       LOGGER.info("Sent event to deposit topic");
@@ -63,7 +63,7 @@ public class TransferServiceImpl implements TransferService {
     return true;
   }
 
-  private ResponseEntity<String> callRemoteServce() throws Exception {
+  private ResponseEntity<String> callRemoteService() throws Exception {
     String requestUrl = "http://localhost:8082/response/200";
     ResponseEntity<String> response = restTemplate.exchange(requestUrl, HttpMethod.GET, null, String.class);
 
