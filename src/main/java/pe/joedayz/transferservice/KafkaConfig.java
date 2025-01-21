@@ -11,6 +11,7 @@ import org.springframework.kafka.config.TopicBuilder;
 import org.springframework.kafka.core.DefaultKafkaProducerFactory;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.core.ProducerFactory;
+import org.springframework.kafka.transaction.KafkaTransactionManager;
 
 /**
  * @author josediaz
@@ -80,6 +81,12 @@ public class KafkaConfig {
   KafkaTemplate<String, Object> kafkaTemplate(ProducerFactory<String, Object> producerFactory) {
     return new KafkaTemplate<>(producerFactory);
   }
+
+  @Bean
+  KafkaTransactionManager<String, Object> kafkaTransactionManager(ProducerFactory<String, Object> producerFactory) {
+    return new KafkaTransactionManager<>(producerFactory);
+  }
+
 
   @Bean
   NewTopic createWithdrawTopic() {
