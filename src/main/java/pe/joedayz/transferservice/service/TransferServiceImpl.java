@@ -1,5 +1,6 @@
 package pe.joedayz.transferservice.service;
 
+import java.net.ConnectException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.env.Environment;
@@ -36,7 +37,9 @@ public class TransferServiceImpl implements TransferService {
 
 
   @Override
-  @Transactional(value = "kafkaTransactionManager")
+  @Transactional
+//  @Transactional(value = "kafkaTransactionManager", rollbackFor = {TransferServiceException.class,
+//      ConnectException.class}, noRollbackFor = {SpecificException.class})
   public boolean transfer(TransferRestModel transferRestModel) {
     WithdrawalRequestedEvent withdrawalEvent = new WithdrawalRequestedEvent(transferRestModel.getSenderId(),
         transferRestModel.getRecepientId(), transferRestModel.getAmount());
