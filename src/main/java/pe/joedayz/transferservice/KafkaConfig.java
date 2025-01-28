@@ -1,5 +1,6 @@
 package pe.joedayz.transferservice;
 
+import jakarta.persistence.EntityManagerFactory;
 import java.util.HashMap;
 import java.util.Map;
 import org.apache.kafka.clients.admin.NewTopic;
@@ -12,6 +13,7 @@ import org.springframework.kafka.core.DefaultKafkaProducerFactory;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.core.ProducerFactory;
 import org.springframework.kafka.transaction.KafkaTransactionManager;
+import org.springframework.orm.jpa.JpaTransactionManager;
 
 /**
  * @author josediaz
@@ -82,11 +84,15 @@ public class KafkaConfig {
     return new KafkaTemplate<>(producerFactory);
   }
 
-  @Bean
+  @Bean("kafkaTransactionManager")
   KafkaTransactionManager<String, Object> kafkaTransactionManager(ProducerFactory<String, Object> producerFactory) {
     return new KafkaTransactionManager<>(producerFactory);
   }
 
+  @Bean("transactionManager")
+  JpaTransactionManager jpaTransactionManager(EntityManagerFactory entityManagerFactory) {
+    return new JpaTransactionManager(entityManagerFactory);
+  }
 
   @Bean
   NewTopic createWithdrawTopic() {
